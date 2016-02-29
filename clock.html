@@ -1,0 +1,108 @@
+<!doctype html>
+<head>
+    <meta charset="UTF-8">
+    <title>CSS3+javascript制作钟表效果</title>
+    <style>
+        ul,li{padding: 0;
+            margin: 0; list-style: none}
+        #box{
+            width:206px;height:206px; margin:80px auto; position:relative;
+        }
+        #list{
+            height:200px;border:3px solid #000; border-radius:103px; position:relative;
+        }
+        #list li{
+            width:2px;height:6px;background:#666;
+            position:absolute;
+            left:99px;
+            top:0;
+            -webkit-transform-origin:0 100px;
+        }
+        #list li:nth-of-type(5n+1){
+            height: 10px;
+            background: #000;
+        }
+        #hand{
+            width: 12px;
+            height: 12px;
+            position: absolute;
+            left: 97px;
+            top: 97px;
+        }
+        #hour{
+            width:4px; height:45px;background:#000;     position:absolute;left:4px;bottom:6px; -webkit-transform-origin:bottom;
+
+        }
+        #min{
+            width: 2px;
+            height: 60px;
+            position: absolute;
+            left:5px;
+            bottom:6px;
+            background: #666;
+            -webkit-transform-origin:bottom;
+        }
+        #sec{
+            width: 2px;
+            height: 75px;
+            background: red;
+            position: absolute;
+            left:5px;
+            bottom: 6px;
+            -webkit-transform-origin:bottom;
+        }
+        #center{
+            height: 12px;
+            border-radius: 9px;
+            background: #000;
+            position: relative;
+        }
+
+    </style>
+</head>
+<body>
+<div id="box">
+    <ul id="list">
+    </ul>
+    <div id="hand">
+        <div id="hour"></div>
+        <div id="min"></div>
+        <div id="sec"></div>
+        <div id="center"></div>
+    </div>
+</div>
+<script>
+    window.onload = function(){
+        var oBox = document.getElementById('box');
+        var oList = document.getElementById('list');
+        var oHour = document.getElementById('hour');
+        var oMin  = document.getElementById('min');
+        var oSec  = document.getElementById('sec');
+        toList(oList);
+        toTime(oSec,oMin,oHour);
+        setInterval(function(){
+            toTime(oSec,oMin,oHour);
+        },1000);
+
+        //时分秒度数
+        function toTime(oSec,oMin,oHour){
+            var oDate=new Date();
+            var iSec=oDate.getSeconds();
+            var iMin=oDate.getMinutes()+iSec/60;
+            var iHour=(oDate.getHours()%12)+iMin/60;
+            oSec.style.WebkitTransform="rotate("+(iSec*360/60)+"deg)";
+            oMin.style.WebkitTransform="rotate("+(iMin*360/60)+"deg)";
+            oHour.style.WebkitTransform="rotate("+(iHour*360/12)+"deg)";
+        }
+
+        //生成刻钟
+        function toList(obj){
+            var sHtml = "";
+            for(var i=0; i<60; i++){
+                sHtml+="<li style='-webkit-transform:rotate("+6*i+"deg)'></li>"
+            }
+            obj.innerHTML = sHtml;
+        }
+    }
+</script>
+</body>
